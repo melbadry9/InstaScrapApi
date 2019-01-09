@@ -4,7 +4,6 @@ import time
 import logging
 import traceback
 import threading
-import hashlib
 
 #third party modules
 import tqdm
