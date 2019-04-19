@@ -178,6 +178,20 @@ class USER(object):
                     "verified": profile_is_verified 
                 }
 
+                business_done = False
+                while not business_done:
+                    business_mail = "https://i.instagram.com/api/v1/users/{0}/info/".format(pref_data['id'])
+                    business_result = self.session.get(business_mail, timeout=self.timeout)
+                    if business_result.status_code == 200:
+                        business_done = True
+                        business_info = business_result.json()['user']
+                    else:
+                        msg = "RATE_LIMITED [business_info]"
+                        logging.error(msg)
+                        if self.verbose:
+                            tqdm.tqdm.write(self.p.Error(msg))
+                        time.sleep(30)
+
                 logging.info("<%s> profile scraped successfuly" % self.username)
                 msg = self.p.Success("profile scraped successfuly" + self.p.High(self.username))
                 if self.verbose:
@@ -187,7 +201,7 @@ class USER(object):
                 data = {
                     "errors": errors,
                     "pref": pref_data,
-                    "full": profile_page
+                    "full": business_info
                 }
 
                 # to get out the loop
