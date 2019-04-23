@@ -43,7 +43,7 @@ class USER(object):
     # formating the output
     p = OUTPUT()
 
-    def __init__(self, username, cookies=None, session=None, verbose=False, bar=True, timeout=20, threads=5):
+    def __init__(self, username, cookies=None, session=None, proxy={}, ssl=True, verbose=False, bar=True, timeout=20, threads=5):
         self.info = None
         self.full_info = None
         self.user_valid = None
@@ -70,13 +70,14 @@ class USER(object):
         self.story = None
         self.story_error = []
 
-        if session == None and cookies == None:
-            self.session = requests.Session()
-        elif cookies:
-            self.session = requests.Session()
-            self.session.cookies = cookies
-        else:
+        if session:
             self.session = session
+        else:
+            self.session = requests.Session()
+            self.session.cookies = requests.cookies.cookiejar_from_dict(self.cookie)
+        
+        self.session.verify = ssl
+        self.session.proxies = proxy
         self.session.headers = headers
         self.jail = threading.Semaphore(threads)
         
@@ -123,10 +124,7 @@ class USER(object):
             try:
                 errors = []
                 # whether to use cookies or session
-                if self.cookie == None:
-                    query_result = self.session.get(query_url, timeout=self.timeout)
-                else:
-                    query_result = self.session.get(query_url, cookies=self.cookie, timeout=self.timeout)
+                query_result = self.session.get(query_url, timeout=self.timeout)
 
                 # make sure that user is exist  
                 if "The link you followed may be broken" in query_result.text:
