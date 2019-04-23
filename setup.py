@@ -9,6 +9,7 @@ setup(
     install_requires=[
         'requests',
         'tqdm',
-        'bs4'
+        'bs4',
+        'lxml'
         ]
 )

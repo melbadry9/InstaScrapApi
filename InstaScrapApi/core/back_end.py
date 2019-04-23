@@ -155,12 +155,13 @@ class USER(object):
 
                 # make sure account is not private or followed by the viewer
                 if (profile_security == True) and (followed_by_viewer == False):
-                        if not profile_id == dict(self.session.cookies)['ds_user_id']:
-                            errors.append("PRIVATE_USER")
-                            logging.error("<%s> PRIVATE_USER" % self.username)
-                            msg = self.p.Error("PRIVATE_USER" + self.p.High(self.username))
-                            if self.verbose:
-                                tqdm.tqdm.write(msg)
+                    #avoid dublicated cookies
+                    if not profile_id == self.session.cookies.get(name="ds_user_id", domain=".instagram.com"):
+                        errors.append("PRIVATE_USER")
+                        logging.error("<%s> PRIVATE_USER" % self.username)
+                        msg = self.p.Error("PRIVATE_USER" + self.p.High(self.username))
+                        if self.verbose:
+                            tqdm.tqdm.write(msg)
                             
                 # generate user pref data
                 pref_data = {
