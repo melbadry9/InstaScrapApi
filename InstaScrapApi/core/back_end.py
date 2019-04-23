@@ -70,8 +70,11 @@ class USER(object):
         self.story = None
         self.story_error = []
 
-        if session == None:
+        if session == None and cookies == None:
             self.session = requests.Session()
+        elif cookies:
+            self.session = requests.Session()
+            self.session.cookies = cookies
         else:
             self.session = session
         self.session.headers = headers
