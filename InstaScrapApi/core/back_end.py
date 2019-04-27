@@ -50,6 +50,9 @@ class USER(object):
         self.username = username
         
         self.bar = bar
+        self.ssl = ssl
+        self.headers = headers
+        self.proxy = proxy
         self.cookie = cookies
         self.timeout = timeout
         self.verbose = verbose
@@ -76,11 +79,18 @@ class USER(object):
             self.session = requests.Session()
             self.session.cookies = requests.cookies.cookiejar_from_dict(self.cookie)
         
-        self.session.verify = ssl
-        self.session.proxies = proxy
-        self.session.headers = headers
+        self.__PreSession()
         self.jail = threading.Semaphore(threads)
-        
+
+    def __PreSession(self):
+        connection_pool = requests.adapters.HTTPAdapter(pool_connections=30, pool_maxsize=30)
+        self.session.mount("https://", connection_pool)
+        self.session.mount("http://", connection_pool)
+        self.session.verify = self.ssl
+        self.session.proxies = self.proxy
+        self.session.headers = self.headers
+        return self.session
+
     def Information(self) -> dict:
         '''collecting user basic information
 
@@ -961,7 +971,7 @@ class USER(object):
         -------
         requests.Session
         '''
-        url = "https://www.instagram.com:443/accounts/login/ajax/"
+        url = "https://www.instagram.com/accounts/login/ajax/"
         headers = {
             "User-Agent": "Mozilla/6.0",
             "Accept": "*/*",
@@ -1002,7 +1012,7 @@ class USER(object):
         if self.verbose:
             tqdm.tqdm.write(self.p.Success("session created"))
         self.session = session
-        return session
+        return self.__PreSession()
 
     @staticmethod
     def __ParseVar(var: int, per_request=50) -> list:
