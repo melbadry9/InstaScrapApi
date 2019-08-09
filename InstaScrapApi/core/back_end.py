@@ -254,10 +254,11 @@ class USER(object):
 
                     # to get out the loop
                     done = True
-
+                       
         # set object data
         self.info = data['pref']
         self.full_info = data['full']
+        self.__CsrfToken()
         return data
 
     def Media(self, get_number=0, per_request=50, after="") -> dict:
@@ -1012,7 +1013,11 @@ class USER(object):
         if self.verbose:
             tqdm.tqdm.write(self.p.Success("session created"))
         self.session = session
+        self.__CsrfToken()
         return self.__PreSession()
+
+    def __CsrfToken(self):
+        self.session.headers["x-csrftoken"] = self.session.cookies.get("csrftoken")
 
     @staticmethod
     def __ParseVar(var: int, per_request=50) -> list:
