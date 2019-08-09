@@ -16,7 +16,7 @@ from .meta import (EXCUTION_ERROR, FAILD_LOGIN, PRIVATE_USER, RATE_LIMIT, OUTPUT
 
 #LOGGING
 file_name = "{0}.log".format(time.ctime().replace(" ","_").replace(":","-"))
-logging.basicConfig(level=logging.DEBUG, filename=file_name,format="%(asctime)s - %(processName)s -%(threadName)s %(levelname)s: %(message)s")
+#logging.basicConfig(level=logging.DEBUG, filename=file_name,format="%(asctime)s - %(processName)s -%(threadName)s %(levelname)s: %(message)s")
 
 
 class USER(object):
@@ -1070,8 +1070,8 @@ class ROOT(USER):
             number of running threads
         '''
 
-    def __init__(self, username, cookies=None, session=None, verbose=False, bar=True, timeout=20, threads=5):
-        super().__init__(username, cookies, session, verbose, bar, timeout, threads)
+    def __init__(self, username, cookies=None, session=None, proxy={}, ssl=True, verbose=False, bar=True, timeout=20, threads=5):
+        super().__init__(username, cookies, session, proxy, ssl, verbose, bar, timeout, threads)
 
         self.alerts = None
         self. notification_error = []
