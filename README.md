@@ -44,3 +44,6 @@ root1.Following(get_number=100, per_request=50, after="")
 root1.ExploreMedia(get_number=14, per_request=14, after="1")
 
 ```
+
+## Donation
+[![Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://buymeacoffee.com/melbadry9)
