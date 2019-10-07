@@ -197,6 +197,9 @@ class USER(object):
                     if business_result.status_code == 200:
                         business_done = True
                         business_info = business_result.json()['user']
+                    elif business_result.status_code == 400:
+                        business_info = business_result.json()
+                        business_done = True
                     else:
                         msg = "RATE_LIMITED [business_info]"
                         logging.error(msg)
