@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name= "InstaScrapApi",
-    version= "1.0.0",
+    version= "1.1.0",
     author= "Mohamed Elbadry",
     author_email= "mohamed.sa.elbadry@gmail.com",
     packages= find_packages(),
